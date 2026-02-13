@@ -6,13 +6,11 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/12 06:35:12 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/13 11:33:18 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "get_next_line.h"
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
@@ -22,38 +20,14 @@
 # define EOL_SPEC '\n'
 #endif
 
-char	*sub_mem(char *p, size_t start, size_t sub_len)
+char	*find_eol(char *p, size_t read_size)
 {
-	char	*sub;
-	size_t	index;
+	char	*p_eol;
 
-	index = 0;
-	if (!sub_len)
-		return (0);
-	sub = malloc(sub_len + 1);
-	while (index < sub_len)
-	{
-		sub[index] = p[start + index];
-		index++;
-	}
-	sub[sub_len] = 0;
-	return (sub);
-}
-
-char	*find_eol(char *p, size_t size, size_t read_size)
-{
-	size_t	index;
-
-	index = 0;
-	while (index < size + read_size)
-	{
-		if (p[index] == EOL_SPEC)
-			return (p + index + 1);
-		index++;
-	}
-	if (read_size < BUFFER_SIZE)
-		return (p + size);
-	return (0);
+	p_eol = ft_strchr(p, EOL_SPEC);
+	if (!p_eol && read_size < BUFFER_SIZE)
+		p_eol = ft_strchr(p, 0);
+	return (p_eol);
 }
 
 char	*overwrite(char *dst, char *src)
@@ -64,74 +38,56 @@ char	*overwrite(char *dst, char *src)
 	return (dst);
 }
 
-char	*mem_join(char *p1, char *p2, size_t p1_s, size_t p2_s)
+char	*extract_line(char **buffer, char *p_eol)
 {
-	char	*new_p;
-	size_t	index;
+	char	*line;
+	char	*temp;
+	size_t	line_size;
+	size_t	buffer_size;
 
-	index = 0;
-	new_p = malloc(p1_s + p2_s);
-	while (index < p1_s)
-	{
-		new_p[index] = p1[index];
-		index++;
-	}
-	while (index - p1_s < p2_s)
-	{
-		new_p[index] = p2[index - p1_s];
-		index++;
-	}
-	return (new_p);
+	temp = 0;
+	line_size = p_eol - *buffer + 1;
+	buffer_size = ft_strlen(*buffer);
+	buffer_size = buffer_size - line_size;
+	line = ft_substr(*buffer, 0, line_size);
+	if (buffer_size)
+		temp = ft_substr(*buffer, line_size, buffer_size);
+	*buffer = overwrite(*buffer, temp);
+	return (line);
+}
+
+size_t	read_data(int fd, char *data)
+{
+	size_t	size;
+
+	size = read(fd, data, BUFFER_SIZE);
+	data[size] = 0;
+	return (size);
 }
 
 char	*get_next_line(int fd)
 {
-	char			data[BUFFER_SIZE];
-	static char		*buffer;
-	static size_t	buffer_size;
+	char			data[BUFFER_SIZE + 1];
 	size_t			data_size;
+	static char		*buffer;
 	char			*temp;
 	char			*line;
-	size_t			line_size;
 
 	line = 0;
-	if (!buffer)
-		buffer_size = 0;
-	data_size = 0;
 	while (!line)
 	{
-		data_size = read(fd, data, BUFFER_SIZE);
-		if (!data_size && !buffer)
+		temp = 0;
+		data_size = read_data(fd, data);
+		if (!data_size && (!buffer || !buffer[0]))
 			return (0);
-		temp = mem_join(buffer, data, buffer_size, data_size);
-		buffer_size = buffer_size + data_size;
+		if (buffer)
+			temp = ft_strjoin(buffer, data);
+		else
+			temp = ft_strjoin("", data);
 		buffer = overwrite(buffer, temp);
-		temp = find_eol(buffer, buffer_size, data_size);
+		temp = find_eol(buffer, data_size);
 		if (temp)
-		{
-			line_size = (unsigned long)(temp) - (unsigned long)(buffer);
-			line = sub_mem(buffer, 0, line_size);
-			temp = sub_mem(buffer, line_size, buffer_size - line_size);
-			buffer_size = buffer_size - line_size;
-			buffer = overwrite(buffer, temp);
-		}
+			line = extract_line(&buffer, temp);
 	}
 	return (line);
-}
-
-int	main(void)
-{
-	char	*line;
-
-	line = "";
-	while (line)
-	{
-		line = get_next_line(0);
-		if (line)
-		{
-			printf("[%s]", line);
-			free(line);
-		}
-	}
-	return (0);
 }
