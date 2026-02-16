@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 14:56:59 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:01:14 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,15 @@ ssize_t	read_data(int fd, char *data)
 //	TODO: find conditional jump
 char	*get_next_line(int fd)
 {
-	char			data[BUFFER_SIZE + 1];
-	size_t			data_size;
+	char			*data;
+	ssize_t			data_size;
 	static char		*buffer;
 	char			*temp;
 	char			*line;
 
 	line = 0;
-	while (!line)
+	data = malloc(BUFFER_SIZE + 1);
+	while (data && !line)
 	{
 		temp = 0;
 		data_size = read_data(fd, data);
