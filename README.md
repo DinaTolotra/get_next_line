@@ -85,7 +85,7 @@ close(fd);
 
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
-* Handles variable buffer sizes (1 to INT_MAX - 1)
+* Handles variable buffer sizes (1 to around 1024000)
 * Memory-safe when properly used
 
 ## Project Structure
