@@ -85,23 +85,31 @@ close(fd);
 
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
-* Handles variable buffer sizes (1 to around 1024000)
+* Handles variable buffer sizes (1 to around 1024000 by default)
 * Memory-safe when properly used
 
 ## Project Structure
 
 ```bash
 .
+├── get_next_line_bonus.c
+├── get_next_line_bonus.h
 ├── get_next_line.c
-├── get_next_line_utils.c
 ├── get_next_line.h
+├── get_next_line_utils_bonus.c
+├── get_next_line_utils.c
 └── README.md
 ```
 
 ## Resources
 
+* static variable theory: [wikipedia: static variable](https://en.wikipedia.org/wiki/Static_variable)
+* static variable usage: [codecademy: c - static variable](https://www.codecademy.com/resources/docs/c/static-variables)
 * 42 project subject documentation
 
 ### AI Usage
 
-AI tools were used only for documentation structuring and wording improvements. The implementation logic, algorithm design, and debugging were performed manually to ensure full understanding of the project requirements.
+AI tools were used for documentation structuring and wording improvements.
+
+AI was **not** used to generate or copy implementation code directly.
+All logic and coding decisions were made and implemented by the project author.
