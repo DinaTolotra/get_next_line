@@ -78,22 +78,78 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=128 \
 
 ## Usage Example
 
+* For mendatory part:
 ```c
-int fd;
-char *line;
+#include <stdio.h>
+#include <fcntl.h>
 
-line = "";
-fd = open("file.txt", O_RDONLY);
-while (line)
+#include "get_next_line.h"
+
+int	main(int ac, char **av)
 {
-    line = get_next_line(fd);
-    if (line)
-    {
-        printf("%s", line);
-        free(line);
-    }
+	int fd;
+	char *line;
+
+	fd = 0;
+	line = "";
+	if (ac == 2)
+		fd = open(av[1], O_RDONLY);
+	while (line)
+	{
+		line = get_next_line(fd);
+		if (line)
+		{
+			printf("%s", line);
+			free(line);
+		}
+	}
+	close(fd);
 }
-close(fd);
+```
+
+* For bonus part:
+```c
+#include <stdio.h>
+#include <fcntl.h>
+
+#include "get_next_line.h"
+
+int	main(int ac, char **av)
+{
+	int fd1;
+	int fd2;
+    int f1_index;
+    int f2_index;
+	char *line;
+
+	fd1 = 0;
+	fd2 = 0;
+    f1_index = 0;
+    f2_index = 0;
+	line = "";
+	if (ac == 3)
+    {
+		fd1 = open(av[1], O_RDONLY);
+		fd2 = open(av[2], O_RDONLY);
+    }
+	while (line)
+	{
+		line = get_next_line(fd1);
+		if (line)
+		{
+			printf("%10s: %3i | %s", av[1], f1_index, line);
+			free(line);
+		}
+		line = get_next_line(fd2);
+		if (line)
+		{
+			printf("%10s: %3i | %s", av[2], f2_index, line);
+			free(line);
+		}
+	}
+	close(fd1);
+	close(fd2);
+}
 ```
 
 ## Features
