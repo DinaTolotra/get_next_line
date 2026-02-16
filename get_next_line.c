@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 13:08:41 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/16 14:46:31 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ size_t	read_data(int fd, char *data)
 	return (size);
 }
 
+//	TODO: check fd
+//	TODO: find conditional jump
 char	*get_next_line(int fd)
 {
 	char			data[BUFFER_SIZE + 1];
