@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 13:08:55 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/16 14:56:38 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,13 @@ char	*extract_line(char **buffer, char *p_eol)
 	return (line);
 }
 
-size_t	read_data(int fd, char *data)
+ssize_t	read_data(int fd, char *data)
 {
-	size_t	size;
+	ssize_t	size;
 
 	size = read(fd, data, BUFFER_SIZE);
-	data[size] = 0;
+	if (size != -1)
+		data[size] = 0;
 	return (size);
 }
 
@@ -75,27 +76,27 @@ char	*get_next_line(int fd)
 {
 	char			data[BUFFER_SIZE + 1];
 	size_t			data_size;
-	static char		**buffer_list;
+	static char		**buff_l;
 	char			*temp;
 	char			*line;
 
 	line = 0;
-	if (!buffer_list)
-		buffer_list = malloc(sizeof(char *) * FD_MAX);
+	if (!buff_l)
+		buff_l = malloc(sizeof(char *) * FD_MAX);
 	while (!line)
 	{
 		temp = 0;
 		data_size = read_data(fd, data);
-		if (!data_size && (!buffer_list[fd] || !buffer_list[fd][0]))
+		if (data_size == -1 || (!data_size && (!buff_l[fd] || !buff_l[fd][0])))
 			return (0);
-		if (buffer_list[fd])
-			temp = ft_strjoin(buffer_list[fd], data);
+		if (buff_l[fd])
+			temp = ft_strjoin(buff_l[fd], data);
 		else
 			temp = ft_strjoin("", data);
-		buffer_list[fd] = overwrite(buffer_list[fd], temp);
-		temp = find_eol(buffer_list[fd], data_size);
+		buff_l[fd] = overwrite(buff_l[fd], temp);
+		temp = find_eol(buff_l[fd], data_size);
 		if (temp)
-			line = extract_line(&buffer_list[fd], temp);
+			line = extract_line(&buff_l[fd], temp);
 	}
 	return (line);
 }

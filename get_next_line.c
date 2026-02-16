@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 14:46:31 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/16 14:56:59 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,16 @@ char	*extract_line(char **buffer, char *p_eol)
 	return (line);
 }
 
-size_t	read_data(int fd, char *data)
+ssize_t	read_data(int fd, char *data)
 {
-	size_t	size;
+	ssize_t	size;
 
 	size = read(fd, data, BUFFER_SIZE);
-	data[size] = 0;
+	if (size != -1)
+		data[size] = 0;
 	return (size);
 }
 
-//	TODO: check fd
 //	TODO: find conditional jump
 char	*get_next_line(int fd)
 {
@@ -82,7 +82,7 @@ char	*get_next_line(int fd)
 	{
 		temp = 0;
 		data_size = read_data(fd, data);
-		if (!data_size && (!buffer || !buffer[0]))
+		if (data_size == -1 || (!data_size && (!buffer || !buffer[0])))
 			return (0);
 		if (buffer)
 			temp = ft_strjoin(buffer, data);
