@@ -49,16 +49,31 @@ This approach ensures:
 Compile using:
 
 ```bash
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
+cc -Wall -Wextra -Werror
 	main.c get_next_line.c get_next_line_utils.c
 ```
 
+```bash
+cc -Wall -Wextra -Werror
+	main.c get_next_line_bonus.c get_next_line_utils_bonus.c
+```
+
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
+Avalaible macro:
+* `BUFFER_SIZE` = 42 : size of the buffer used for `read`
+* `EOL_SPEC` = '\n' : the character specifying the end of a line
+* `FD_MAX` = 128 : the maximum value of a the fd passed as paremeter (bonus)
 
 Example:
 
 ```bash
-cc -Wall -Wextra -Werror main.c get_next_line.c get_next_line_utils.c
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
+    main.c get_next_line.c get_next_line_utils.c
+```
+
+```bash
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=128 \
+    main.c get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
 
 ## Usage Example
@@ -86,6 +101,8 @@ close(fd);
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
 * Handles variable buffer sizes (1 to around 1024000 by default)
+* Handles variable end-of-file specifier
+* Handles sevaral file descriptor (bonus)
 * Memory-safe when properly used
 
 ## Project Structure
