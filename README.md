@@ -23,7 +23,10 @@ char *get_next_line(int fd);
 ### Return values
 
 * A line read from the file descriptor
-* `NULL` if there is nothing left to read or if an error occurs
+* `NULL` if:
+	* end-of-file reached and buffer is empty
+	* an error occured
+	* the file descriptor is invalid
 
 ## How It Works
 
@@ -38,6 +41,8 @@ The algorithm follows these steps:
 5. Keep the remaining data for the next call.
 6. Repeat until end-of-file or error.
 
+For the bonus part, the buffer are indexed via the given `fd`.
+
 This approach ensures:
 
 * Minimal reads from the file descriptor
@@ -49,36 +54,34 @@ This approach ensures:
 Compile using:
 
 ```bash
+# Mandatory
 cc -Wall -Wextra -Werror
 	main.c get_next_line.c get_next_line_utils.c
-```
-
-```bash
+# Bonus
 cc -Wall -Wextra -Werror
 	main.c get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
 
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
-Avalaible macro:
+Avalaible macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
 * `EOL_SPEC` = '\n' : the character specifying the end of a line
-* `FD_MAX` = 128 : the maximum value of a the fd passed as paremeter (bonus)
+* `FD_MAX` = 128 : the maximum value of the fd passed as parameter (bonus)
 
 Example:
 
 ```bash
+# Mandatory
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
     main.c get_next_line.c get_next_line_utils.c
-```
-
-```bash
+# Bonus
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=128 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
 
 ## Usage Example
 
-* For mendatory part:
+* For mandatory part:
 ```c
 #include <stdio.h>
 #include <fcntl.h>
@@ -158,7 +161,7 @@ int	main(int ac, char **av)
 * Works with files and standard input
 * Handles variable buffer sizes (1 to around 1024000 by default)
 * Handles variable end-of-file specifier
-* Handles sevaral file descriptor (bonus)
+* Handles several file descriptor (bonus)
 * Memory-safe when properly used
 
 ## Project Structure
