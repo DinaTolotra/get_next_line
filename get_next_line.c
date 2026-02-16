@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 11:23:38 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/16 13:08:41 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*find_eol(char *p, size_t read_size)
 {
 	char	*p_eol;
 
+	if (p == 0)
+		return (0);
 	p_eol = ft_strchr(p, EOL_SPEC);
 	if (!p_eol && read_size < BUFFER_SIZE)
 		p_eol = ft_strchr(p, 0);
