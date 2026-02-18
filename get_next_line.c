@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 15:01:14 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/02/18 07:57:19 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*get_next_line(int fd)
 		temp = 0;
 		data_size = read_data(fd, data);
 		if (data_size == -1 || (!data_size && (!buffer || !buffer[0])))
-			return (0);
+			break;
 		if (buffer)
 			temp = ft_strjoin(buffer, data);
 		else
@@ -94,5 +94,6 @@ char	*get_next_line(int fd)
 		if (temp)
 			line = extract_line(&buffer, temp);
 	}
+	data = overwrite(data, 0);
 	return (line);
 }
