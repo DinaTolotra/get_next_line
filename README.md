@@ -18,7 +18,7 @@ This project focuses on:
 
 ```c
 char *get_next_line(int fd);
-````
+```
 
 ### Return values
 
@@ -46,7 +46,6 @@ For the bonus part, the buffer are indexed via the given `fd`.
 This approach ensures:
 
 * Minimal reads from the file descriptor
-* Efficient memory usage
 * Correct handling of partial reads
 
 ## Compilation
@@ -57,6 +56,8 @@ Compile using:
 # Mandatory
 cc -Wall -Wextra -Werror
 	main.c get_next_line.c get_next_line_utils.c
+```
+```bash
 # Bonus
 cc -Wall -Wextra -Werror
 	main.c get_next_line_bonus.c get_next_line_utils_bonus.c
@@ -65,7 +66,7 @@ cc -Wall -Wextra -Werror
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
 Avalaible macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
-* `EOL_SPEC` = '\n' : the character specifying the end of a line
+* `EOL_SPEC` = '\n' : the character specifying the 'end of line'
 * `FD_MAX` = 128 : the maximum value of the fd passed as parameter (bonus)
 
 Example:
@@ -74,6 +75,8 @@ Example:
 # Mandatory
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
     main.c get_next_line.c get_next_line_utils.c
+```
+```bash
 # Bonus
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=128 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
