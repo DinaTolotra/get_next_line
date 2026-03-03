@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 15:02:08 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/03 13:17:34 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ char	*overwrite(char *dst, char *src)
 {
 	if (dst)
 		free(dst);
-	dst = src;
-	return (dst);
+	return (src);
 }
 
 char	*extract_line(char **buffer, char *p_eol)
@@ -54,11 +53,14 @@ char	*extract_line(char **buffer, char *p_eol)
 	temp = 0;
 	line_size = p_eol - *buffer + 1;
 	buffer_size = ft_strlen(*buffer);
-	buffer_size = buffer_size - line_size;
 	line = ft_substr(*buffer, 0, line_size);
-	if (buffer_size)
+	if (buffer_size > line_size)
+	{
 		temp = ft_substr(*buffer, line_size, buffer_size);
-	*buffer = overwrite(*buffer, temp);
+		*buffer = overwrite(*buffer, temp);
+	}
+	else
+		*buffer = overwrite(*buffer, 0);
 	return (line);
 }
 
@@ -76,20 +78,18 @@ char	*get_next_line(int fd)
 {
 	char			*data;
 	ssize_t			data_size;
-	static char		**buff_l;
+	static char		*buff_l[FD_MAX];
 	char			*temp;
 	char			*line;
 
 	line = 0;
-	if (!buff_l)
-		buff_l = malloc(sizeof(char *) * FD_MAX);
 	data = malloc(BUFFER_SIZE + 1);
 	while (data && !line)
 	{
 		temp = 0;
 		data_size = read_data(fd, data);
 		if (data_size == -1 || (!data_size && (!buff_l[fd] || !buff_l[fd][0])))
-			return (0);
+			break;
 		if (buff_l[fd])
 			temp = ft_strjoin(buff_l[fd], data);
 		else
@@ -99,5 +99,6 @@ char	*get_next_line(int fd)
 		if (temp)
 			line = extract_line(&buff_l[fd], temp);
 	}
+	data = overwrite(data, 0);
 	return (line);
 }
