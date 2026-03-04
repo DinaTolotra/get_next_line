@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/03 10:09:41 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/04 07:37:39 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,17 @@ char	*get_next_line(int fd)
 	data = malloc(BUFFER_SIZE + 1);
 	while (data && !line)
 	{
-		temp = 0;
 		data_size = read_data(fd, data);
 		if (data_size == -1 || (!data_size && (!buffer || !buffer[0])))
-			break;
-		if (buffer)
-			temp = ft_strjoin(buffer, data);
-		else
-			temp = ft_strjoin("", data);
+			break ;
+		temp = ft_strjoin(buffer, data);
 		buffer = overwrite(buffer, temp);
 		temp = find_eol(buffer, data_size);
 		if (temp)
 			line = extract_line(&buffer, temp);
 	}
 	data = overwrite(data, 0);
+	if (data_size == -1)
+		buffer = overwrite(buffer, 0);
 	return (line);
 }

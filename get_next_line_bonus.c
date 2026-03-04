@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/03 13:17:34 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/04 07:45:03 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,8 @@ char	*get_next_line(int fd)
 		temp = 0;
 		data_size = read_data(fd, data);
 		if (data_size == -1 || (!data_size && (!buff_l[fd] || !buff_l[fd][0])))
-			break;
-		if (buff_l[fd])
-			temp = ft_strjoin(buff_l[fd], data);
-		else
-			temp = ft_strjoin("", data);
+			break ;
+		temp = ft_strjoin(buff_l[fd], data);
 		buff_l[fd] = overwrite(buff_l[fd], temp);
 		temp = find_eol(buff_l[fd], data_size);
 		if (temp)
