@@ -25,7 +25,7 @@ char *get_next_line(int fd);
 * A line read from the file descriptor
 * `NULL` if:
 	* end-of-file reached and buffer is empty
-	* an error occured
+	* an error occurred
 	* the file descriptor is invalid
 
 ## How It Works
@@ -41,12 +41,20 @@ The algorithm follows these steps:
 5. Keep the remaining data for the next call.
 6. Repeat until end-of-file or error.
 
-For the bonus part, the buffer are indexed via the given `fd`.
+For the bonus part, the buffers are indexed via the given `fd`.
 
 This approach ensures:
 
 * Minimal reads from the file descriptor
 * Correct handling of partial reads
+
+For the bonus part, the macro FD_MAX limits the maximum value of the fd handled by the algorithm.
+
+This limit ensures:
+
+* Better control over memory usage
+* Safe indexing of the static buffer array
+* Predictable behavior when handling multiple file descriptors
 
 ## Compilation
 
@@ -64,10 +72,10 @@ cc -Wall -Wextra -Werror
 ```
 
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
-Avalaible macros:
+Available optional macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
 * `EOL_SPEC` = '\n' : the character specifying the 'end of line'
-* `FD_MAX` = 128 : the maximum value of the fd passed as parameter (bonus)
+* `FD_MAX` = 1024 : the maximum value of the fd passed as parameter (bonus)
 
 Example:
 
@@ -78,7 +86,7 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
 ```
 ```bash
 # Bonus
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=128 \
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=1028 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
 
@@ -164,7 +172,7 @@ int	main(int ac, char **av)
 * Works with files and standard input
 * Handles variable buffer sizes (1 to around 1024000 by default)
 * Handles variable end-of-file specifier
-* Handles several file descriptor (bonus)
+* Handles several file descriptors (bonus)
 * Memory-safe when properly used
 
 ## Project Structure
@@ -184,6 +192,7 @@ int	main(int ac, char **av)
 
 * static variable theory: [wikipedia: static variable](https://en.wikipedia.org/wiki/Static_variable)
 * static variable usage: [codecademy: c - static variable](https://www.codecademy.com/resources/docs/c/static-variables)
+* valgrind lexic: [](https://derickrethans.nl/valgrind-null.html)
 * 42 project subject documentation
 
 ### AI Usage
