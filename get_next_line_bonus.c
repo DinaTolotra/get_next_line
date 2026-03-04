@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/04 07:45:03 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/04 08:55:11 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #endif
 
 #ifndef FD_MAX
-# define FD_MAX 128
+# define FD_MAX 1024
 #endif
 
 char	*find_eol(char *p, size_t read_size)
@@ -97,5 +97,7 @@ char	*get_next_line(int fd)
 			line = extract_line(&buff_l[fd], temp);
 	}
 	data = overwrite(data, 0);
+	if (data_size == -1 && buff_l[fd])
+		buff_l[fd] = overwrite(buff_l[fd], 0);
 	return (line);
 }
