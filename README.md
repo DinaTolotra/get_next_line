@@ -192,7 +192,8 @@ int	main(int ac, char **av)
 
 * static variable theory: [wikipedia: static variable](https://en.wikipedia.org/wiki/Static_variable)
 * static variable usage: [codecademy: c - static variable](https://www.codecademy.com/resources/docs/c/static-variables)
-* valgrind lexic: [](https://derickrethans.nl/valgrind-null.html)
+* valgrind lexic: [valgrind null](https://derickrethans.nl/valgrind-null.html)
+* c array default value: [geeksforgeeks c fact](https://www.geeksforgeeks.org/c/g-fact-53/)
 * 42 project subject documentation
 
 ### AI Usage
