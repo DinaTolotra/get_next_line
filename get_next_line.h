@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 06:28:31 by todina-r          #+#    #+#             */
-/*   Updated: 2026/02/16 11:24:08 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/07 06:51:44 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+
+# define EOL_SPEC '\n'
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+
+# if BUFFER_SIZE <= 0
+#  error "BUFFER_SIZE must be greater than 0"
+# endif
 
 char	*get_next_line(int fd);
 

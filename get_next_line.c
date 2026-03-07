@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
+/*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/05 08:21:41 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/07 06:50:21 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
-
-#ifndef EOL_SPEC
-# define EOL_SPEC '\n'
-#endif
 
 static void	overwrite(char **dst, char *src)
 {
@@ -69,7 +61,6 @@ char	*get_next_line(int fd)
 	static char	data[BUFFER_SIZE + 1];
 	ssize_t		data_size;
 
-	temp = 0;
 	line = 0;
 	data_size = 1;
 	line = join(line, data, EOL_SPEC);

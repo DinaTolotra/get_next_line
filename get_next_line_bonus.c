@@ -6,23 +6,11 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/04 08:55:11 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/07 07:23:33 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
-
-#ifndef EOL_SPEC
-# define EOL_SPEC '\n'
-#endif
-
-#ifndef FD_MAX
-# define FD_MAX 1024
-#endif
+#include "get_next_line_bonus.h"
 
 char	*find_eol(char *p, size_t read_size)
 {
