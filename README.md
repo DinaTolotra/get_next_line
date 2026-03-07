@@ -41,20 +41,25 @@ The algorithm follows these steps:
 5. Keep the remaining data for the next call.
 6. Repeat until end-of-file or error.
 
-For the bonus part, the buffers are indexed via the given `fd`.
-
 This approach ensures:
 
 * Minimal reads from the file descriptor
 * Correct handling of partial reads
 
-For the bonus part, the macro FD_MAX limits the maximum value of the fd handled by the algorithm.
+In the bonus implementation, buffers are indexed by the file descriptor.
+
+The FD_MAX macro defines the maximum supported descriptor value and allows safe indexing of the static buffer array.
 
 This limit ensures:
 
 * Better control over memory usage
 * Safe indexing of the static buffer array
 * Predictable behavior when handling multiple file descriptors
+
+### Mandatory vs Bonus
+
+* For the mandatory part, the static buffer is stored in the program's static storage area and persists for the entire lifetime of the program. It does not need to be manually freed.
+* For the bonus part, the static variable stores pointers to dynamically allocated buffers indexed by file descriptor. These buffers are allocated on the heap and must be freed appropriately when no longer needed.
 
 ## Compilation
 
@@ -74,19 +79,19 @@ cc -Wall -Wextra -Werror
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
 Available optional macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
-* `EOL_SPEC` = '\n' : the character specifying the 'end of line'
-* `FD_MAX` = 1024 : the maximum value of the fd passed as parameter (bonus)
+* `EOL_SPEC` = '\n' : the character specifying the 'end of line' (changed in source code)
+* `FD_MAX` = 1024 : the maximum value of the fd passed as parameter (changed in source code) (bonus)
 
 Example:
 
 ```bash
 # Mandatory
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
     main.c get_next_line.c get_next_line_utils.c
 ```
 ```bash
 # Bonus
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=1028 \
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
 
@@ -95,6 +100,7 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=1028 \
 * For mandatory part:
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 #include "get_next_line.h"
@@ -124,6 +130,7 @@ int	main(int ac, char **av)
 * For bonus part:
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 #include "get_next_line.h"
@@ -151,13 +158,13 @@ int	main(int ac, char **av)
 		line = get_next_line(fd1);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[1], f1_index, line);
+			printf("%10s: %3i | %s", av[1], ++f1_index, line);
 			free(line);
 		}
 		line = get_next_line(fd2);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[2], f2_index, line);
+			printf("%10s: %3i | %s", av[2], ++f2_index, line);
 			free(line);
 		}
 	}
@@ -170,10 +177,11 @@ int	main(int ac, char **av)
 
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
-* Handles variable buffer sizes (1 to around 1024000 by default)
-* Handles variable end-of-file specifier
+* Handles variable buffer sizes (BUFFER_SIZE > 0)
+* Handles configurable end-of-line character
 * Handles several file descriptors (bonus)
-* Memory-safe when properly used
+* Memory-safe when properly used (mandatory)
+* Memory-safe when used till end-of-file (bonus)
 
 ## Project Structure
 
@@ -198,7 +206,7 @@ int	main(int ac, char **av)
 
 ### AI Usage
 
-AI tools were used for documentation structuring and wording improvements.
+AI tools were used to improve documentation structure and wording.
 
 AI was **not** used to generate or copy implementation code directly.
 All logic and coding decisions were made and implemented by the project author.
