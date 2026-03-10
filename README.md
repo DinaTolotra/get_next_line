@@ -32,7 +32,7 @@ char *get_next_line(int fd);
 
 The implementation reads data from the file descriptor in fixed-size chunks defined by `BUFFER_SIZE`.
 
-The static buffer stores unread data between calls.  When read() returns more data than needed to produce a line, the remaining characters are kept in the buffer and reused during the next function call.
+The static buffer stores unread data between calls.  When `read` returns more data than needed to produce a line, the remaining characters are kept in the buffer and reused during the next function call.
 
 The algorithm follows these steps:
 
@@ -43,18 +43,11 @@ The algorithm follows these steps:
 5. Keep the remaining data for the next call.
 6. Repeat until end-of-file or error.
 
-A static array indexed by file descriptor stores the remaining buffer for each open file, allowing the function to manage multiple descriptors simultaneously.
-
-For the bonus part, the buffers are indexed via the given `fd` limited by the macro `FD_MAX`.
+For the bonus part, the static buffer is stored in an array indexed by the file descriptor, allowing independent reading states for multiple descriptors.
 
 * Better control over memory usage
 * Safe indexing of the static buffer array
 * Predictable behavior when handling multiple file descriptors
-
-### Mandatory vs Bonus
-
-* For the mandatory part, the static buffer is stored in the program's static storage area and persists for the entire lifetime of the program. It does not need to be manually freed.
-* For the bonus part, the static variable stores pointers to dynamically allocated buffers indexed by file descriptor. These buffers are allocated on the heap and must be freed appropriately when no longer needed.
 
 ## Compilation
 
@@ -89,7 +82,6 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
 # Bonus
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
-./a.out
 ./a.out [<file>] [<file>]
 ```
 
@@ -175,10 +167,9 @@ int	main(int ac, char **av)
 
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
-* Handles variable buffer sizes ( BUFFER_SIZE > 0 )
+* Supports different `BUFFER_SIZE` values defined at compile time.
 * Handles several file descriptors (bonus)
-* Memory-safe when properly used (mandatory)
-* Memory-safe when used till end-of-file (bonus)
+* Memory-safe when properly freed and used till end-of-file
 
 ## Project Structure
 
