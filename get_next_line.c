@@ -6,13 +6,13 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/10 10:12:38 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/10 10:54:58 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*find_eol(char *p, size_t read_size)
+static char	*find_eol(char *p, size_t read_size)
 {
 	char	*p_eol;
 
@@ -24,14 +24,14 @@ char	*find_eol(char *p, size_t read_size)
 	return (p_eol);
 }
 
-char	*overwrite(char *dst, char *src)
+static char	*overwrite(char *dst, char *src)
 {
 	if (dst)
 		free(dst);
 	return (src);
 }
 
-char	*extract_line(char **buffer, char *p_eol)
+static char	*extract_line(char **buffer, char *p_eol)
 {
 	char	*line;
 	char	*temp;
@@ -52,7 +52,7 @@ char	*extract_line(char **buffer, char *p_eol)
 	return (line);
 }
 
-ssize_t	read_data(int fd, char *data)
+static ssize_t	read_data(int fd, char *data)
 {
 	ssize_t	size;
 
