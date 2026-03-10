@@ -47,13 +47,14 @@ A static array indexed by file descriptor stores the remaining buffer for each o
 
 For the bonus part, the buffers are indexed via the given `fd` limited by the macro `FD_MAX`.
 
-This approach ensures:
-
-* Minimal reads from the file descriptor
-* Correct handling of partial reads
 * Better control over memory usage
 * Safe indexing of the static buffer array
 * Predictable behavior when handling multiple file descriptors
+
+### Mandatory vs Bonus
+
+* For the mandatory part, the static buffer is stored in the program's static storage area and persists for the entire lifetime of the program. It does not need to be manually freed.
+* For the bonus part, the static variable stores pointers to dynamically allocated buffers indexed by file descriptor. These buffers are allocated on the heap and must be freed appropriately when no longer needed.
 
 ## Compilation
 
@@ -97,6 +98,7 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
 * For mandatory part:
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 #include "get_next_line.h"
@@ -126,6 +128,7 @@ int	main(int ac, char **av)
 * For bonus part:
 ```c
 #include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 
 #include "get_next_line.h"
@@ -153,13 +156,13 @@ int	main(int ac, char **av)
 		line = get_next_line(fd1);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[1], f1_index++, line);
+			printf("%10s: %3i | %s", av[1], ++f1_index, line);
 			free(line);
 		}
 		line = get_next_line(fd2);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[2], f2_index++, line);
+			printf("%10s: %3i | %s", av[2], ++f2_index, line);
 			free(line);
 		}
 	}
@@ -174,7 +177,8 @@ int	main(int ac, char **av)
 * Works with files and standard input
 * Handles variable buffer sizes ( BUFFER_SIZE > 0 )
 * Handles several file descriptors (bonus)
-* Memory-safe when properly used
+* Memory-safe when properly used (mandatory)
+* Memory-safe when used till end-of-file (bonus)
 
 ## Project Structure
 
@@ -194,11 +198,12 @@ int	main(int ac, char **av)
 * static variable theory: [wikipedia: static variable](https://en.wikipedia.org/wiki/Static_variable)
 * static variable usage: [codecademy: c - static variable](https://www.codecademy.com/resources/docs/c/static-variables)
 * valgrind lexic: [valgrind null](https://derickrethans.nl/valgrind-null.html)
+* c array default value: [geeksforgeeks c fact](https://www.geeksforgeeks.org/c/g-fact-53/)
 * 42 project subject documentation
 
 ### AI Usage
 
-AI tools were used for documentation structuring and wording improvements.
+AI tools were used to improve documentation structure and wording.
 
 AI was **not** used to generate or copy implementation code directly.
 All logic and coding decisions were made and implemented by the project author.
