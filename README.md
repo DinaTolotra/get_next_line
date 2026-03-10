@@ -79,8 +79,6 @@ cc -Wall -Wextra -Werror
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
 Available optional macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
-* `EOL_SPEC` = '\n' : the character specifying the 'end of line' (changed in source code)
-* `FD_MAX` = 1024 : the maximum value of the fd passed as parameter (changed in source code) (bonus)
 
 Example:
 
