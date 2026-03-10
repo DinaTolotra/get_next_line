@@ -30,7 +30,9 @@ char *get_next_line(int fd);
 
 ## How It Works
 
-The implementation reads data from the file descriptor in fixed-size chunks defined by `BUFFER_SIZE`. The data is stored in a static buffer that preserves unread content between function calls.
+The implementation reads data from the file descriptor in fixed-size chunks defined by `BUFFER_SIZE`.
+
+The static buffer stores unread data between calls.  When read() returns more data than needed to produce a line, the remaining characters are kept in the buffer and reused during the next function call.
 
 The algorithm follows these steps:
 
@@ -41,17 +43,14 @@ The algorithm follows these steps:
 5. Keep the remaining data for the next call.
 6. Repeat until end-of-file or error.
 
-For the bonus part, the buffers are indexed via the given `fd`.
+A static array indexed by file descriptor stores the remaining buffer for each open file, allowing the function to manage multiple descriptors simultaneously.
+
+For the bonus part, the buffers are indexed via the given `fd` limited by the macro `FD_MAX`.
 
 This approach ensures:
 
 * Minimal reads from the file descriptor
 * Correct handling of partial reads
-
-For the bonus part, the macro FD_MAX limits the maximum value of the fd handled by the algorithm.
-
-This limit ensures:
-
 * Better control over memory usage
 * Safe indexing of the static buffer array
 * Predictable behavior when handling multiple file descriptors
@@ -64,30 +63,33 @@ Compile using:
 # Mandatory
 cc -Wall -Wextra -Werror
 	main.c get_next_line.c get_next_line_utils.c
+./a.out [<file>]
 ```
 ```bash
 # Bonus
 cc -Wall -Wextra -Werror
 	main.c get_next_line_bonus.c get_next_line_utils_bonus.c
+./a.out [<file>] [<file>]
 ```
 
 The program can compile both with and without the `-D BUFFER_SIZE` flag.
 Available optional macros:
 * `BUFFER_SIZE` = 42 : size of the buffer used for `read`
-* `EOL_SPEC` = '\n' : the character specifying the 'end of line'
-* `FD_MAX` = 1024 : the maximum value of the fd passed as parameter (bonus)
 
 Example:
 
 ```bash
 # Mandatory
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" \
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
     main.c get_next_line.c get_next_line_utils.c
+./a.out [<file>]
 ```
 ```bash
 # Bonus
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 -D "EOL_SPEC='\n'" -D FD_MAX=1028 \
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 \
     main.c get_next_line_bonus.c get_next_line_utils_bonus.c
+./a.out
+./a.out [<file>] [<file>]
 ```
 
 ## Usage Example
@@ -151,13 +153,13 @@ int	main(int ac, char **av)
 		line = get_next_line(fd1);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[1], f1_index, line);
+			printf("%10s: %3i | %s", av[1], f1_index++, line);
 			free(line);
 		}
 		line = get_next_line(fd2);
 		if (line)
 		{
-			printf("%10s: %3i | %s", av[2], f2_index, line);
+			printf("%10s: %3i | %s", av[2], f2_index++, line);
 			free(line);
 		}
 	}
@@ -170,8 +172,7 @@ int	main(int ac, char **av)
 
 * Reads one line at a time from any valid file descriptor
 * Works with files and standard input
-* Handles variable buffer sizes (1 to around 1024000 by default)
-* Handles variable end-of-file specifier
+* Handles variable buffer sizes ( BUFFER_SIZE > 0 )
 * Handles several file descriptors (bonus)
 * Memory-safe when properly used
 
@@ -192,7 +193,7 @@ int	main(int ac, char **av)
 
 * static variable theory: [wikipedia: static variable](https://en.wikipedia.org/wiki/Static_variable)
 * static variable usage: [codecademy: c - static variable](https://www.codecademy.com/resources/docs/c/static-variables)
-* valgrind lexic: [](https://derickrethans.nl/valgrind-null.html)
+* valgrind lexic: [valgrind null](https://derickrethans.nl/valgrind-null.html)
 * 42 project subject documentation
 
 ### AI Usage
