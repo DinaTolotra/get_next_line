@@ -6,11 +6,11 @@
 /*   By: todina-r <todina-r@student.42antananarivo  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 06:26:36 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/04 08:41:06 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/12 07:49:42 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
