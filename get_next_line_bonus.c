@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/10 18:52:25 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/10 10:54:39 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/12 08:10:17 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*get_next_line(int fd)
 	line = 0;
 	data_size = -1;
 	data = malloc(BUFFER_SIZE + 1);
-	while (data && !line)
+	while (BUFFER_SIZE > 0 && fd >= 0 && data && !line)
 	{
 		temp = 0;
 		data_size = read_data(fd, data);

@@ -6,7 +6,7 @@
 /*   By: todina-r <todina-r@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 06:28:31 by todina-r          #+#    #+#             */
-/*   Updated: 2026/03/10 08:52:00 by todina-r         ###   ########.fr       */
+/*   Updated: 2026/03/12 08:12:33 by todina-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# if BUFFER_SIZE <= 0
-#  error "BUFFER_SIZE must be greater than 0"
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 0
 # endif
 
 char	*get_next_line(int fd);
